@@ -1,6 +1,6 @@
 package com.dohyundev.orderex.order.generic.dto
 
-import com.dohyundev.orderex.order.command.entity.OrderStatus
+import com.dohyundev.orderex.order.command.domain.entity.OrderStatus
 import com.github.f4b6a3.tsid.TsidCreator
 import java.io.Serializable
 

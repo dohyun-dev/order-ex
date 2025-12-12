@@ -1,4 +1,4 @@
-package com.dohyundev.orderex.order.command.entity
+package com.dohyundev.orderex.order.command.domain.entity
 
 import com.github.f4b6a3.tsid.TsidCreator
 import jakarta.persistence.*
@@ -14,10 +14,10 @@ class OrderItem(
     var quantity: Int,
 
     var price: Long,
-
+) {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    var order: Order,
-) {
+    lateinit var order: Order
+
     fun getTotalPrice(): Long = price * quantity
 }

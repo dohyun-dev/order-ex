@@ -1,6 +1,6 @@
 package com.dohyundev.orderex.order.generic.mapper
 
-import com.dohyundev.orderex.order.command.entity.Order
+import com.dohyundev.orderex.order.command.domain.entity.Order
 import com.dohyundev.orderex.order.generic.dto.OrderDto
 import org.springframework.stereotype.Component
 

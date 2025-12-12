@@ -1,4 +1,4 @@
-package com.dohyundev.orderex.order.command.entity
+package com.dohyundev.orderex.order.command.domain.entity
 
 import com.github.f4b6a3.tsid.TsidCreator
 import jakarta.persistence.*
@@ -7,7 +7,7 @@ import java.time.LocalDateTime
 @Entity
 @Table(name = "payments")
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "payment_type")
+@DiscriminatorColumn(name = "payment_method")
 abstract class Payment(
     @Id
     val id: Long = TsidCreator.getTsid256().toLong(),
@@ -17,23 +17,28 @@ abstract class Payment(
     @Enumerated(EnumType.STRING)
     var status: PaymentStatus = PaymentStatus.PENDING,
 
+    @Transient
+    val method: PaymentMethod
+) {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "order_id")
-    var order: Order? = null,
+    lateinit var order: Order
 
-    var paymentAt: LocalDateTime? = null,
-) {
+    var paymentAt: LocalDateTime? = null
+
+    var refundedAt: LocalDateTime? = null
+
+    fun fail() {
+        status = status.fail(this)
+    }
+
     fun complete() {
-        status = PaymentStatus.COMPLETED
+        status = status.complete(this)
         paymentAt = LocalDateTime.now()
     }
 
-    fun fail() {
-        status = PaymentStatus.FAILED
-    }
-
     fun refund() {
-        status = PaymentStatus.REFUNDED
+        status = status.refund(this)
     }
 }
 
