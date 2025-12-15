@@ -2,7 +2,7 @@ package com.dohyundev.orderex.order.command.ui
 
 import com.dohyundev.orderex.order.command.application.OrderCommandServiceV1
 import com.dohyundev.orderex.order.command.ui.dto.CreateOrderItemRequest
-import com.dohyundev.orderex.order.command.ui.mapper.OrderRequestMapper
+import com.dohyundev.orderex.order.command.ui.mapper.OrderItemRequestMapper
 import com.dohyundev.orderex.order.generic.dto.OrderDto
 import com.dohyundev.orderex.order.query.application.OrderQueryServiceV1
 import jakarta.validation.Valid
@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.*
 class OrderCommandApiControllerV1(
     private val orderCommandService: OrderCommandServiceV1,
     private val orderQueryService: OrderQueryServiceV1,
-    private val orderRequestMapper: OrderRequestMapper
+    private val orderItemRequestMapper: OrderItemRequestMapper
 ) {
     @PostMapping
     fun createOrder(
         @Valid @RequestBody request: CreateOrderItemRequest
     ): ResponseEntity<OrderDto> {
-        val order = orderCommandService.createOrder()
+        val order = orderCommandService.createOrder(request.toCommand(orderItemRequestMapper))
         return ResponseEntity.status(HttpStatus.CREATED).body(order)
     }
 
